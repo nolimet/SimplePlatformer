@@ -9,8 +9,9 @@ namespace EnemyBehaviour
         public float height = 1f;
         public float margine = 0.1f;
         public Vector2 offSet;
+        public float forceMult = 1;
         public bool Debugline;
-
+        
         readonly Vector2 dir = new Vector2(0, -1);
 
         Rigidbody2D RB2;
@@ -27,18 +28,18 @@ namespace EnemyBehaviour
             if (hit && hit.collider.tag != Tags.turnAround) 
             {
                 if (hit.distance < height - margine)
-                    RB2.AddForce(new Vector2(0, 4 + Mathf.Clamp(hit.distance, 0, 10)));
+                    RB2.AddForce(new Vector2(0, 4 + (Mathf.Clamp((height - hit.distance) / height, 0, 1) * 10f) * forceMult));
                 else if (hit.distance > height + margine)
-                    RB2.AddForce(new Vector2(0, -4 - Mathf.Clamp(hit.distance, 0, 10)));
+                    RB2.AddForce(new Vector2(0, -4 - (Mathf.Clamp((height - hit.distance) / height, 0, 1) * 10f) * forceMult));
                 else if (RB2.velocity.y != 0)
                 {
-                    RB2.velocity = new Vector2(RB2.velocity.x,RB2.velocity.y / 1.7f);
+                    RB2.velocity = new Vector2(RB2.velocity.x, RB2.velocity.y / 1.7f);
                     if (RB2.velocity.y < 0.05f && RB2.velocity.y > -0.05f)
                         RB2.velocity = new Vector2(RB2.velocity.x, 0);
                 }
 
                 if (Debugline)
-                    Debug.DrawLine(transform.position, hit.point, Color.red, 0.1f);
+                    Debug.DrawLine(transform.position + (Vector3)offSet, hit.point, Color.red, 0.1f);
             }
         }
     }

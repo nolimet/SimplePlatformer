@@ -8,8 +8,6 @@ public class CameraControler : MonoBehaviour
     public float MoveTime = 0.03f;
     Vector3 newPos = Vector3.zero;
 
-    
-
     float timerTick = 0;
     float timerY = 0;
     void Update()
@@ -19,6 +17,7 @@ public class CameraControler : MonoBehaviour
             SetPosX();
             timerTick = MoveTime;
         }
+
         if (timerY <= 0)
         {
             SetPosY();
@@ -29,8 +28,6 @@ public class CameraControler : MonoBehaviour
 
         timerTick -= Time.deltaTime;
         timerY -= Time.deltaTime;
-
-
     }
 
     void Move()

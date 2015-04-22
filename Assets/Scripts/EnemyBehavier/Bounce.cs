@@ -9,6 +9,8 @@ namespace EnemyBehaviour
 
         Rigidbody2D RB2;
         public Vector2 speed;
+        public bool ConstSpeed;
+        public float forceMult = 1f;
         int direction = 1;
         void Start()
         {
@@ -17,14 +19,21 @@ namespace EnemyBehaviour
 
         void FixedUpdate()
         {
-            Vector2 dir = Vector2.zero;
-            if (direction > 0 && RB2.velocity.x < 0)
-                dir = speed * direction * 8f;
-            else if (direction < 0 && RB2.velocity.x > 0)
-                dir = speed * direction * 8f;
+            if (!ConstSpeed)
+            {
+                Vector2 dir = Vector2.zero;
+                if (direction > 0 && RB2.velocity.x < 0)
+                    dir = speed * direction * 8f *forceMult;
+                else if (direction < 0 && RB2.velocity.x > 0)
+                    dir = speed * direction * 8f * forceMult;
+                else
+                    dir = speed * direction * forceMult;
+                RB2.AddForce(dir);
+            }
             else
-                dir = speed * direction;
-            RB2.AddForce(dir);
+            {
+                RB2.velocity = new Vector2((speed.x * direction), RB2.velocity.y);
+            }
         }
 
         public void OnTriggerEnter2D(Collider2D other)
@@ -40,7 +49,6 @@ namespace EnemyBehaviour
             else
                 transform.rotation = Quaternion.identity;
 
-            RB2.velocity = new Vector2(RB2.velocity.x, 0);
         }
     }
 }
