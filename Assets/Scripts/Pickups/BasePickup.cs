@@ -5,7 +5,7 @@ using System.Collections;
 public class BasePickup : MonoBehaviour
 {
 
-    public virtual void Action()
+    public virtual void PickUp(GameObject obj)
     {
         print("this is a Test");
     }
